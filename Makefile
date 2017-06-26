@@ -9,25 +9,27 @@ BDIR = ./bin
 CC = gcc
 CFLAGS = -I$(IDIR)
 
-_DEPS = matrix.h
-DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
+# Get all files in inc/ directory.
+DEPS = $(wildcard $(IDIR)/*.h)
 
-_OBJ = matrix.o
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+# Generate object files' names.
+_OBJ = $(wildcard $(ODIR)/*.o)
+_OBJ += $(patsubst $(IDIR)/%.h,$(ODIR)/%.o,$(DEPS))
+OBJ = $(sort $(_OBJ))
 
-$(OBJ): $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
+$(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 # Rules.
-matrix: $(OBJ)
+l24es: $(OBJ)
 	gcc -o $(BDIR)/$@ $^ $(CFLAGS)
 
 .PHONY: clean
 
 clean:
 	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~
+	rm -f $(BDIR)/*
 
 all:
 	$(MAKE) clean
-	$(MAKE) matrix
-	echo "Project compiled successfully."
+	$(MAKE) l24es
