@@ -3,10 +3,15 @@
 #include "l24es.h"
 
 int main(int argc, char const ** argv) {
-  l24es_matrix_t * m = createMatrix(2,3);
-  printf("%d %d\n", m -> N, m -> M);
+  ordering o = ROW;
+  ordering p = COLUMN;
+  l24es_matrix_t * m1 = createMatrix(2,3,p);
+  l24es_matrix_t * m2 = createMatrix(2,3,p);
   float data[] = {1,3,2,4,6,5};
-  initMatrix(m, data, 0);
-  printAsMatrix(m);
+  initMatrix(m1, data);
+  initMatrix(m2, data);
+  l24es_matrix_t * m3 = sumTwoMatrices(m1, m2);
+  m3 = multiplyByScalar(m3, 2);
+  printAsMatrix(m3);
   return 0;
 }
