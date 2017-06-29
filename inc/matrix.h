@@ -56,7 +56,16 @@ l24es_matrix_t * sumTwoMatrices(l24es_matrix_t *, l24es_matrix_t *);
   Inputs:
     matrix: matrix to multiply.
     value: multiplier.
-  Returns
+  Returns:
     l24es_matrix_t matrix with the result of the multiplication.
 */
 l24es_matrix_t * multiplyByScalar(l24es_matrix_t *, float);
+
+/* transposeMatrix
+  Transposes a given matrix and returns a new one with the result.
+  Inputs:
+    matrix: matrix to transpose.
+  Returns:
+    l24es_matrix_t transposed matrix.
+*/
+l24es_matrix_t * transposeMatrix(l24es_matrix_t *);

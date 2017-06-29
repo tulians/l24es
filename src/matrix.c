@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include "matrix.h"
 
+int nElem, nElemIndex;
+
 l24es_matrix_t * createMatrix(int nRows, int nColumns, char order) {
   l24es_matrix_t * newMatrix = (l24es_matrix_t *)malloc(sizeof(l24es_matrix_t));
   newMatrix -> nRows = nRows;
@@ -32,7 +34,7 @@ void initMatrix(l24es_matrix_t * matrix, float * data) {
 }
 
 void printAsMatrix(l24es_matrix_t * matrix) {
-  if (matrix != NULL) {
+  if (matrix) {
     int rows, columns;
     for(rows = 0; rows < matrix -> nRows; rows++) {
       for(columns = 0; columns < matrix -> nColumns; columns++) {
@@ -46,8 +48,8 @@ void printAsMatrix(l24es_matrix_t * matrix) {
 l24es_matrix_t * sumTwoMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
   if ((m1 -> nRows == m2 -> nRows) && (m1 -> nColumns == m2 -> nColumns) && (m1 -> order == m2 -> order)) {
     l24es_matrix_t * result = createMatrix(m1 -> nRows, m1 -> nColumns, m1 -> order);
-    int nElemIndex = m1 -> nRows * m1 -> nColumns;
-    while(nElemIndex--) {
+    nElem = m1 -> nRows * m1 -> nColumns;
+    for(nElemIndex = 0; nElemIndex < nElem; nElemIndex++) {
       result -> matrix[nElemIndex] = m1 -> matrix[nElemIndex] + m2 -> matrix[nElemIndex];
     }
     return result;
@@ -58,13 +60,31 @@ l24es_matrix_t * sumTwoMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
 }
 
 l24es_matrix_t * multiplyByScalar(l24es_matrix_t * matrix, float value) {
-  if (matrix != NULL) {
-    int index;
+  if (matrix) {
     l24es_matrix_t * result = createMatrix(matrix -> nRows, matrix -> nColumns, matrix -> order);
-    for(index = 0; index < result -> nRows * result -> nColumns; index++) {
-      result -> matrix[index] = matrix -> matrix[index] * value;
+    nElem = matrix -> nRows * matrix -> nColumns;
+    for(nElemIndex = 0; nElemIndex < nElem; nElemIndex++) {
+      result -> matrix[nElemIndex] = matrix -> matrix[nElemIndex] * value;
     }
     return result;
+  } else {
+    /* TODO(tulians): define custom error messages. */
+    return NULL;
+  }
+}
+
+l24es_matrix_t * transposeMatrix(l24es_matrix_t * matrix) {
+  if (matrix) {
+    l24es_matrix_t * transposedMatrix = createMatrix(matrix -> nColumns, matrix -> nRows, matrix -> order);
+    transposedMatrix -> order = matrix -> order;
+    int transposedIndex;
+    nElem = matrix -> nRows * matrix -> nColumns;
+    for(nElemIndex = 0; nElemIndex < nElem - 1; nElemIndex++) {
+      transposedIndex = ((matrix -> nRows * nElemIndex) - ((nElem - 1)* (nElemIndex / matrix -> nColumns))) % (nElem - 1);
+      transposedMatrix -> matrix[transposedIndex] = matrix -> matrix[nElemIndex];
+    }
+    transposedMatrix -> matrix[nElemIndex] = matrix -> matrix[nElemIndex];
+    return transposedMatrix;
   } else {
     /* TODO(tulians): define custom error messages. */
     return NULL;
