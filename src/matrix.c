@@ -33,12 +33,12 @@ void initMatrix(l24es_matrix_t * matrix, float * data) {
 
 void printAsMatrix(l24es_matrix_t * matrix) {
   if (matrix) {
-    int rows, columns;/*
+    int rows, columns;
     printf("Matrix information:\n");
     printf("- Number of rows: %d\n", matrix -> nRows);
     printf("- Number of column: %d\n", matrix -> nColumns);
     printf("- Ordering: %s\n", matrix -> order == ROW ? "ROW-MAJOR" : "COLUMN-MAJOR");
-    printf("Content:\n");*/
+    printf("Content:\n");
     for(rows = 0; rows < matrix -> nRows; rows++) {
       for(columns = 0; columns < matrix -> nColumns; columns++) {
         printf("[%d,%d]: %f\t", rows, columns, matrix -> matrix[rows * matrix -> nColumns + columns]);
@@ -106,9 +106,9 @@ void transposeMatrix(l24es_matrix_t * matrix) {
       if (checked & (1 << index)) {
         continue;
       } else {
-        /* Mark the new position as visited. */
-        checked |= 1 << index;
+        /* Swap elements and mark the positions as visited. */
         swap(matrix -> matrix[index], matrix -> matrix[transposedIndexes[index]]);
+        checked |= 1 << index;
         checked |= 1 << transposedIndexes[index];
       }
     }
@@ -121,6 +121,7 @@ void transposeMatrix(l24es_matrix_t * matrix) {
   }
 }
 
+/* STUB
 l24es_matrix_t * multiplyMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
   if ((m1 -> nColumns == m2 -> nRows) && (m1 -> order == m2 -> order)) {
     l24es_matrix_t * result = createMatrix(m1 -> nRows, m2 -> nColumns, m1 -> order);
@@ -130,3 +131,4 @@ l24es_matrix_t * multiplyMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
     return NULL;
   }
 }
+*/
