@@ -1,6 +1,19 @@
-/* l24es - Matrix module header file */
+/* l24es - Matrix module header */
+
+#ifndef _MATRIX_H
+#define _MATRIX_H
 
 #include <stdlib.h>
+#include <string.h>
+#include "message.h"
+#include "l24es.h"
+
+#define swap(x,y) do \
+   { unsigned char swap_temp[sizeof(x) == sizeof(y) ? (signed)sizeof(x) : -1]; \
+     memcpy(swap_temp,&y,sizeof(x)); \
+     memcpy(&y,&x,       sizeof(x)); \
+     memcpy(&x,swap_temp,sizeof(x)); \
+    } while(0)
 
 typedef enum ordering {
   ROW,
@@ -62,10 +75,12 @@ l24es_matrix_t * sumTwoMatrices(l24es_matrix_t *, l24es_matrix_t *);
 l24es_matrix_t * multiplyByScalar(l24es_matrix_t *, float);
 
 /* transposeMatrix
-  Transposes a given matrix and returns a new one with the result.
+  Transposes a given matrix inplace.
   Inputs:
     matrix: matrix to transpose.
   Returns:
-    l24es_matrix_t transposed matrix.
+    No value is returned.
 */
-l24es_matrix_t * transposeMatrix(l24es_matrix_t *);
+void transposeMatrix(l24es_matrix_t *);
+
+#endif /* #ifndef _MATRIX_H_ */

@@ -1,11 +1,9 @@
-/* l24es - Matrix module
-  Definition of a matrix and its operations. All computations will be
-  performed with floats for better accuracy.
-*/
+/* l24es - Matrix module */
 #include <stdio.h>
 #include "matrix.h"
 
-int nElem, nElemIndex;
+int nElem, elemIndex;
+char * errorMessage;
 
 l24es_matrix_t * createMatrix(int nRows, int nColumns, char order) {
   l24es_matrix_t * newMatrix = (l24es_matrix_t *)malloc(sizeof(l24es_matrix_t));
@@ -35,10 +33,15 @@ void initMatrix(l24es_matrix_t * matrix, float * data) {
 
 void printAsMatrix(l24es_matrix_t * matrix) {
   if (matrix) {
-    int rows, columns;
+    int rows, columns;/*
+    printf("Matrix information:\n");
+    printf("- Number of rows: %d\n", matrix -> nRows);
+    printf("- Number of column: %d\n", matrix -> nColumns);
+    printf("- Ordering: %s\n", matrix -> order == ROW ? "ROW-MAJOR" : "COLUMN-MAJOR");
+    printf("Content:\n");*/
     for(rows = 0; rows < matrix -> nRows; rows++) {
       for(columns = 0; columns < matrix -> nColumns; columns++) {
-        printf("%f\t", matrix -> matrix[rows * matrix -> nColumns + columns]);
+        printf("[%d,%d]: %f\t", rows, columns, matrix -> matrix[rows * matrix -> nColumns + columns]);
       }
       printf("\n");
     }
@@ -49,12 +52,13 @@ l24es_matrix_t * sumTwoMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
   if ((m1 -> nRows == m2 -> nRows) && (m1 -> nColumns == m2 -> nColumns) && (m1 -> order == m2 -> order)) {
     l24es_matrix_t * result = createMatrix(m1 -> nRows, m1 -> nColumns, m1 -> order);
     nElem = m1 -> nRows * m1 -> nColumns;
-    for(nElemIndex = 0; nElemIndex < nElem; nElemIndex++) {
-      result -> matrix[nElemIndex] = m1 -> matrix[nElemIndex] + m2 -> matrix[nElemIndex];
+    for(elemIndex = 0; elemIndex < nElem; elemIndex++) {
+      result -> matrix[elemIndex] = m1 -> matrix[elemIndex] + m2 -> matrix[elemIndex];
     }
     return result;
   } else {
-    /* TODO(tulians): define custom error messages. */
+    errorMessage = createErrorMessage("[sumTwoMatrices] Could not perform matrix sum because of parameters mismatch or null matrix.");
+    printf("\n%s\n", errorMessage);
     return NULL;
   }
 }
@@ -63,30 +67,66 @@ l24es_matrix_t * multiplyByScalar(l24es_matrix_t * matrix, float value) {
   if (matrix) {
     l24es_matrix_t * result = createMatrix(matrix -> nRows, matrix -> nColumns, matrix -> order);
     nElem = matrix -> nRows * matrix -> nColumns;
-    for(nElemIndex = 0; nElemIndex < nElem; nElemIndex++) {
-      result -> matrix[nElemIndex] = matrix -> matrix[nElemIndex] * value;
+    for(elemIndex = 0; elemIndex < nElem; elemIndex++) {
+      result -> matrix[elemIndex] = matrix -> matrix[elemIndex] * value;
     }
     return result;
   } else {
-    /* TODO(tulians): define custom error messages. */
+    errorMessage = createErrorMessage("[multiplyByScalar] Could not perform scalar multiplication because of NULL input matrix.");
+    printf("\n%s\n", errorMessage);
     return NULL;
   }
 }
 
-l24es_matrix_t * transposeMatrix(l24es_matrix_t * matrix) {
+void _printAsBinary(int number) {
+  while (number) {
+      if (number & 1)
+      { printf("1"); }
+      else
+      { printf("0"); }
+      number >>= 1;
+  }
+  printf("\n");
+}
+
+void transposeMatrix(l24es_matrix_t * matrix) {
   if (matrix) {
-    l24es_matrix_t * transposedMatrix = createMatrix(matrix -> nColumns, matrix -> nRows, matrix -> order);
-    transposedMatrix -> order = matrix -> order;
-    int transposedIndex;
+    int index, checked;
     nElem = matrix -> nRows * matrix -> nColumns;
-    for(nElemIndex = 0; nElemIndex < nElem - 1; nElemIndex++) {
-      transposedIndex = ((matrix -> nRows * nElemIndex) - ((nElem - 1)* (nElemIndex / matrix -> nColumns))) % (nElem - 1);
-      transposedMatrix -> matrix[transposedIndex] = matrix -> matrix[nElemIndex];
+    /* Initialize vector of transposed indexes. */
+    int * transposedIndexes = (int *)malloc(sizeof(int) * nElem);
+    for (index = 0; index < nElem - 1; index++) {
+      transposedIndexes[index] = ((matrix -> nRows * index) - ((nElem - 1) * (index / matrix -> nColumns))) % (nElem - 1);
     }
-    transposedMatrix -> matrix[nElemIndex] = matrix -> matrix[nElemIndex];
-    return transposedMatrix;
+    transposedIndexes[index] = index;
+    /* Perform transposition. */
+    checked = 0;
+    for (index = 1; index < nElem - 1; index++) {
+      /* If that position was already visited skip the iteration. */
+      if (checked & (1 << index)) {
+        continue;
+      } else {
+        /* Mark the new position as visited. */
+        checked |= 1 << index;
+        swap(matrix -> matrix[index], matrix -> matrix[transposedIndexes[index]]);
+        checked |= 1 << transposedIndexes[index];
+      }
+    }
+    /* Reestructurate matrix. */
+    swap(matrix -> nRows, matrix -> nColumns);
+    free(transposedIndexes);
   } else {
-    /* TODO(tulians): define custom error messages. */
+    errorMessage = createErrorMessage("[transposeMatrix] Could not perform matrix transpose because of NULL input matrix.");
+    printf("\n%s\n", errorMessage);
+  }
+}
+
+l24es_matrix_t * multiplyMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
+  if ((m1 -> nColumns == m2 -> nRows) && (m1 -> order == m2 -> order)) {
+    l24es_matrix_t * result = createMatrix(m1 -> nRows, m2 -> nColumns, m1 -> order);
+  } else {
+    errorMessage = createErrorMessage("[multiplyMatrices] Could not perform matrix multiplication because of NULL input matrices or parameters mismatch.");
+    printf("\n%s\n", errorMessage);
     return NULL;
   }
 }
