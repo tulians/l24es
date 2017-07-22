@@ -60,7 +60,7 @@ void printAsMatrix(l24es_matrix_t *);
   Inputs:
     m1, m2: matrices to sum with each other.
   Returns:
-    l24es_matrix_t matrix with the sum of m1 an m2.
+    l24es_matrix_t matrix with the sum of m1 and m2.
 */
 l24es_matrix_t * sumTwoMatrices(l24es_matrix_t *, l24es_matrix_t *);
 
@@ -82,5 +82,14 @@ l24es_matrix_t * multiplyByScalar(l24es_matrix_t *, float);
     No value is returned.
 */
 void transposeMatrix(l24es_matrix_t *);
+
+/* multiplyMatrices
+  Performs the multiplication of two l24es_matrix_t matrices.
+  Inputs:
+    m1, m2: multiplication operands.
+  Returns:
+    New matrix with the result of the multiplication.
+*/
+l24es_matrix_t * multiplyMatrices(l24es_matrix_t *, l24es_matrix_t *);
 
 #endif /* #ifndef _MATRIX_H_ */

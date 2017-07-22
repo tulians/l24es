@@ -91,25 +91,28 @@ void _printAsBinary(int number) {
 
 void transposeMatrix(l24es_matrix_t * matrix) {
   if (matrix) {
-    int index, checked;
+    int index, internalIndex, checked;
+    float previousValue;
     nElem = matrix -> nRows * matrix -> nColumns;
     /* Initialize vector of transposed indexes. */
     int * transposedIndexes = (int *)malloc(sizeof(int) * nElem);
     for (index = 0; index < nElem - 1; index++) {
-      transposedIndexes[index] = ((matrix -> nRows * index) - ((nElem - 1) * (index / matrix -> nColumns))) % (nElem - 1);
+        transposedIndexes[index] = ((matrix -> nRows * index) - ((nElem - 1) * (index / matrix -> nColumns))) % (nElem - 1);
     }
     transposedIndexes[index] = index;
-    /* Perform transposition. */
+
     checked = 0;
     for (index = 1; index < nElem - 1; index++) {
-      /* If that position was already visited skip the iteration. */
+      internalIndex = index;
       if (checked & (1 << index)) {
         continue;
       } else {
-        /* Swap elements and mark the positions as visited. */
-        swap(matrix -> matrix[index], matrix -> matrix[transposedIndexes[index]]);
-        checked |= 1 << index;
-        checked |= 1 << transposedIndexes[index];
+        previousValue = matrix -> matrix[index];
+        do {
+          checked |= 1 << transposedIndexes[internalIndex];
+          swap(previousValue, matrix -> matrix[transposedIndexes[internalIndex]]);
+          internalIndex = transposedIndexes[internalIndex];
+        } while(internalIndex != index);
       }
     }
     /* Reestructurate matrix. */
@@ -121,14 +124,25 @@ void transposeMatrix(l24es_matrix_t * matrix) {
   }
 }
 
-/* STUB
 l24es_matrix_t * multiplyMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
-  if ((m1 -> nColumns == m2 -> nRows) && (m1 -> order == m2 -> order)) {
+  if (m1 -> nColumns == m2 -> nRows) {
     l24es_matrix_t * result = createMatrix(m1 -> nRows, m2 -> nColumns, m1 -> order);
+    transposeMatrix(m2);
+    int rowsIndexM1, rowsIndexM2, element, resultIndex;
+    resultIndex = 0;
+    for (rowsIndexM1 = 0; rowsIndexM1 < m1 -> nRows; rowsIndexM1++) {
+      for (rowsIndexM2 = 0; rowsIndexM2 < m2 -> nRows; rowsIndexM2++) {
+        result -> matrix[resultIndex] = 0;
+        for (element = 0; element < m1 -> nColumns; element++) {
+          result -> matrix[resultIndex] += (m1 -> matrix[(rowsIndexM1 * m1 -> nColumns) + element]) * (m2 -> matrix[(rowsIndexM2 * m2 -> nColumns) + element]);
+        }
+        resultIndex++;
+      }
+    }
+    return result;
   } else {
     errorMessage = createErrorMessage("[multiplyMatrices] Could not perform matrix multiplication because of NULL input matrices or parameters mismatch.");
     printf("\n%s\n", errorMessage);
     return NULL;
   }
 }
-*/
