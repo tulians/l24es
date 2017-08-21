@@ -1,6 +1,8 @@
 /* l24es - Matrix module */
 #include <stdio.h>
+#include <stdlib.h>
 #include "matrix.h"
+#include "message.h"
 
 int nElem, elemIndex;
 char * errorMessage;

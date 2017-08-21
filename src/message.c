@@ -1,5 +1,6 @@
 /* l24es - Custom messages module */
 #include "message.h"
+#include <stdlib.h>
 
 const char * errorHeader = ANSI_BOLD ANSI_COLOR_RED "ERROR: " ANSI_COLOR_RESET;
 

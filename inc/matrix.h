@@ -3,19 +3,16 @@
 #ifndef _MATRIX_H
 #define _MATRIX_H
 
-#include <stdlib.h>
 #include <string.h>
-#include "message.h"
-#include "l24es.h"
 
 #define swap(x,y) do \
    { unsigned char swap_temp[sizeof(x) == sizeof(y) ? (signed)sizeof(x) : -1]; \
      memcpy(swap_temp,&y,sizeof(x)); \
      memcpy(&y,&x,       sizeof(x)); \
      memcpy(&x,swap_temp,sizeof(x)); \
-    } while(0)
+   } while(0)
 
-typedef enum ordering {
+typedef enum matrixOrdering {
   ROW,
   COLUMN
 } ordering;

@@ -1,6 +1,6 @@
 /* l24es - Threshold functions */
-
 #include <stdlib.h>
+#include "threshold.h"
 
 float * hardSigmoid(float * value, int nElem) {
   int index;

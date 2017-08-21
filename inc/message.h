@@ -3,8 +3,6 @@
 #ifndef _MESSAGE_H
 #define _MESSAGE_H
 
-#include <stdlib.h>
-
 #define ANSI_BOLD          "\e[1m"
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
