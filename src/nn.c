@@ -7,10 +7,11 @@
 #include "threshold.h"
 
 float * _getWeightsFromHiddenLayers(int * unitsPerHiddenLayer, int length, int inputsNumber, int outputsNumber) {
-    int numberOfWeights = (unitsPerHiddenLayer[0] * inputsNumber) + (unitsPerHiddenLayer[length - 1] * outputsNumber);
-    int index;
+    int numberOfWeights = ((unitsPerHiddenLayer[0] * (inputsNumber + 1)) 
+                        + ((unitsPerHiddenLayer[length - 1] + 1) * outputsNumber));
+    int index; 
     for (index = 1; index < length; index++) {
-        numberOfWeights += unitsPerHiddenLayer[index] * unitsPerHiddenLayer[index - 1];
+        numberOfWeights += unitsPerHiddenLayer[index] * (unitsPerHiddenLayer[index - 1] + 1);
     }
     float * weights = (float*)malloc(sizeof(float) * numberOfWeights);
     srand(time(NULL));
@@ -20,16 +21,14 @@ float * _getWeightsFromHiddenLayers(int * unitsPerHiddenLayer, int length, int i
     return weights;  
 }
 
-l24es_nn_t * initializeNeuralNetwork(int inputsNumber, int outputsNumber, 
-                int * unitsPerHiddenLayer, int length, char * activationFunction) {
+l24es_nn_t * initializeNeuralNetwork(int inputsNumber, int outputsNumber, int * unitsPerHiddenLayer, 
+                                     int length, char * activationFunction) {
     l24es_nn_t * neuralNetwork = (l24es_nn_t *)malloc(sizeof(l24es_nn_t));
     neuralNetwork -> inputsNumber = inputsNumber;
     neuralNetwork -> outputsNumber = outputsNumber;
-    neuralNetwork -> weights = _getWeightsFromHiddenLayers(unitsPerHiddenLayer, length, inputsNumber, outputsNumber);    
-    if (!strcmp(activationFunction, "hardSigmoid")) {
-        neuralNetwork -> activationFunction = hardSigmoid; 
-    } else if (!strcmp(activationFunction, "sigmoid")) {
-        // Add more activation functions when necessary.
-    }
+    neuralNetwork -> unitsPerHiddenLayer = unitsPerHiddenLayer;
+    neuralNetwork -> weights = _getWeightsFromHiddenLayers(unitsPerHiddenLayer, length, 
+                                                           inputsNumber, outputsNumber);    
+    neuralNetwork -> activationFunction = setActivationFunction("hardSigmoid");
     return neuralNetwork;
 }

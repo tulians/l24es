@@ -1,28 +1,36 @@
 /* l24es - Main module and point of entry */
+/* System libraries */
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+/* Project specific libraries */
 #include "l24es.h"
 #include "matrix.h"
 #include "nn.h"
 #include "message.h"
 #include "threshold.h"
-
-/* Array length from Google's Chromium Project */
-#define __arrayLength(x) (int)((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+#include "utils.h"
 
 int main(int argc, char const ** argv) {  
     int inputs = 2;
-    int outputs = 2;
-    int uphl[] = {4,3,2,3};
+    int outputs = 1;
+    int uphl[] = {2};
     char * af = "hardSigmoid";
     l24es_nn_t * nn = initializeNeuralNetwork(inputs, outputs, uphl, __arrayLength(uphl), af);
 
     int i;
-    for (i = 0; i < 38; i++) {
+    for (i = 0; i < 9; i++) {
         printf("%f\n", nn -> weights[i]);
     }
 
+    float a[] = {-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5};
+
+    float * t = nn -> activationFunction(a, 11);
+    printf("\n\n");
+    for (i = 0; i < 11; i++) {
+        printf("%f\n", t[i]);
+    }
         /*
   ordering r = ROW;
   ordering c = COLUMN;

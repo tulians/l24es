@@ -3,8 +3,8 @@
 #define _L24ES_H
 
 typedef enum boolean {
-  true,
-  false
+    true,
+    false
 } bool_t;
 
 #endif /* #ifndef _L24ES_H_ */

@@ -4,28 +4,36 @@
 #define _NN_H
 
 #include "matrix.h"
+#include "threshold.h"
 
 typedef struct neuralNetwork {
     int inputsNumber, outputsNumber;
     int * unitsPerHiddenLayer;
-    float * weights; 
-    float * (*activationFunction)(float *, int);
+    float * weights;
+    activationFunction_t activationFunction; 
+//    float * (*activationFunction)(float *, int);
 } l24es_nn_t;
 
 /* initializeNeuralNetwork
-    inputsNumber: number of input nodes.
-    outputsNumber: number of output nodes.
-    unitsPerHiddenLayer: vector cointaining the number of hidden units per hidden layer.
-    length: number of hidden layers.
-    activationNumber: name of the activation function to use.    
+    Inputs:
+        inputsNumber: number of input nodes.
+        outputsNumber: number of output nodes.
+        unitsPerHiddenLayer: vector cointaining the number of hidden units per hidden layer.
+        length: number of hidden layers.
+        activationNumber: name of the activation function to use.
+    Outputs:
+        neuralNetwork: initialized neural network structure.    
  */
 l24es_nn_t * initializeNeuralNetwork(int, int, int *, int, char *);
 
 /* _getWeightsFromHiddenLayers
-    unitsPerHiddenLayer: vector cointaining the number of hidden units per hidden layer.
-    length: number of hidden layers.
-    inputsNumber: number of input nodes.
-    outputsNumber: number of output nodes.
+    Inputs:
+        unitsPerHiddenLayer: vector cointaining the number of hidden units per hidden layer.
+        length: number of hidden layers.
+        inputsNumber: number of input nodes.
+        outputsNumber: number of output nodes.
+    Outputs:
+        weights: weights vector initialized with random numbers.
  */
 float * _getWeightsFromHiddenLayers(int *, int, int, int);
 
