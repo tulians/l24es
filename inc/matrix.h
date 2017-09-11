@@ -89,4 +89,16 @@ void transposeMatrix(l24es_matrix_t *);
 */
 l24es_matrix_t * multiplyMatrices(l24es_matrix_t *, l24es_matrix_t *);
 
+/* dotProduct
+    Performs the dot product between a matrix and a vector.
+    Inputs:
+        matrix
+        vector
+        numberOfMatrixElements: to make optimal use of for cycles. 
+        nElem: number of matrix elements to multiply with each vector element.
+    Output:
+        Resulting vector from the dot product. 
+*/
+float * dotProduct(float *, float *, int, int);
+
 #endif /* #ifndef _MATRIX_H_ */

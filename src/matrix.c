@@ -146,3 +146,14 @@ l24es_matrix_t * multiplyMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
         return NULL;
     }
 }
+
+
+float * dotProduct(float * matrix, float * vector, int numberOfMatrixElements, int nElem) {
+    int matrixIndex, vectorIndex;
+    float * result = (float *)malloc(sizeof(float) * nElem);
+    for (matrixIndex = 0, vectorIndex = 0; matrixIndex < numberOfMatrixElements; matrixIndex++) {
+        result[matrixIndex % nElem] += matrix[matrixIndex] * vector[vectorIndex];
+        if (matrixIndex > (nElem * vectorIndex)) { vectorIndex++; }
+    }
+    return result;
+}

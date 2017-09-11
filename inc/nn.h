@@ -11,7 +11,6 @@ typedef struct neuralNetwork {
     int * unitsPerHiddenLayer;
     float * weights;
     activationFunction_t activationFunction; 
-//    float * (*activationFunction)(float *, int);
 } l24es_nn_t;
 
 /* initializeNeuralNetwork
@@ -24,7 +23,7 @@ typedef struct neuralNetwork {
     Outputs:
         neuralNetwork: initialized neural network structure.    
  */
-l24es_nn_t * initializeNeuralNetwork(int, int, int *, int, char *);
+l24es_nn_t * initializeNeuralNetwork(int, int, int *, int, const char *);
 
 /* _getWeightsFromHiddenLayers
     Inputs:
