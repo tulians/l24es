@@ -8,9 +8,10 @@ float * hardSigmoid(float *, int);
 float * fastSigmoid(float *, int);
 
 /* setActivationFunction
-    Inputs:
+    Returns a pointer to an activation function.
+    -->f()
         activationFunctionName: string with the name of the given activation function.
-    Outputs:
+    f()-->
         af_ptr: pointer to the activation function definition.
  */
 activationFunction_t setActivationFunction(const char *);

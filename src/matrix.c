@@ -147,7 +147,6 @@ l24es_matrix_t * multiplyMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
     }
 }
 
-
 float * dotProduct(float * matrix, float * vector, int numberOfMatrixElements, int nElem) {
     int matrixIndex, vectorIndex;
     float * result = (float *)malloc(sizeof(float) * nElem);
@@ -156,4 +155,14 @@ float * dotProduct(float * matrix, float * vector, int numberOfMatrixElements, i
         if (matrixIndex > (nElem * vectorIndex)) { vectorIndex++; }
     }
     return result;
+}
+
+float * toAugmentedVector(float * vector, int vectorSize) {
+    int index;
+    float * augmentedVector = (float *)malloc((sizeof(float) * vectorSize) + 1);
+    augmentedVector[0] = 1.0;
+    for (index = 0; index < vectorSize; index++) {
+        augmentedVector[index + 1] = vector[index];
+    }
+    return augmentedVector;
 }

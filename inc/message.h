@@ -14,28 +14,28 @@
 
 /* stringLength
     Returns the length in bytes of a string.
-    Inputs:
+    -->f()
         str: string to calculate its length.
-    Returns:
+    f()-->
         Integer value representing the length of str.
 */
 int stringLength(const char *);
 
 /* strcatHeaderAndBody
     Joins the header and the body of a message together.
-    Inputs:
+    -->f()
         header: string indicating message type.
         body: description of the message.
-    Returns:
+    f()-->
         Message to show in stdout.
 */
 char * strcatHeaderAndBody(const char *, const char *);
 
 /* createErrorMessage
     Returns an error message.
-    Inputs:
+    -->f()
         body: string with the error description.
-    Returns:
+    f()-->
         The input body with the concatenated error header.
 */
 char * createErrorMessage(const char *);
