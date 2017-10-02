@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "matrix.h"
 #include "message.h"
+#include "utils.h"
 
 int nElem, elemIndex;
 char * errorMessage;
@@ -145,24 +146,4 @@ l24es_matrix_t * multiplyMatrices(l24es_matrix_t * m1, l24es_matrix_t * m2) {
         printf("\n%s\n", errorMessage);
         return NULL;
     }
-}
-
-float * dotProduct(float * matrix, float * vector, int numberOfMatrixElements, int nElem) {
-    int matrixIndex, vectorIndex;
-    float * result = (float *)malloc(sizeof(float) * nElem);
-    for (matrixIndex = 0, vectorIndex = 0; matrixIndex < numberOfMatrixElements; matrixIndex++) {
-        result[matrixIndex % nElem] += matrix[matrixIndex] * vector[vectorIndex];
-        if (matrixIndex > (nElem * vectorIndex)) { vectorIndex++; }
-    }
-    return result;
-}
-
-float * toAugmentedVector(float * vector, int vectorSize) {
-    int index;
-    float * augmentedVector = (float *)malloc((sizeof(float) * vectorSize) + 1);
-    augmentedVector[0] = 1.0;
-    for (index = 0; index < vectorSize; index++) {
-        augmentedVector[index + 1] = vector[index];
-    }
-    return augmentedVector;
 }

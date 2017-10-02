@@ -3,7 +3,7 @@
 #ifndef _NN_H
 #define _NN_H
 
-#include "matrix.h"
+#include "ops.h"
 #include "threshold.h"
 
 typedef struct neuralNetwork {

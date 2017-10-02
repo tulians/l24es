@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "nn.h"
-#include "threshold.h"
-#include "matrix.h"
+#include "ops.h"
 #include "utils.h"
+#include "threshold.h"
 
 float * _getWeightsFromLayers(int * unitsPerLayer, int length) {
     int numberOfWeights = 0;
